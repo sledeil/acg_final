@@ -699,8 +699,12 @@ export class UIManager {
     const predStepsSlider = document.getElementById('pred-steps-slider');
     if (predStepsSlider) {
       predStepsSlider.addEventListener('input', (e) => {
-        this.game.predictionSteps = parseInt(e.target.value);
-        document.getElementById('pred-steps').textContent = this.game.predictionSteps;
+        const steps = parseInt(e.target.value);
+        this.game.predictionSteps = steps;
+        if (this.game.trajectoryManager) {
+          this.game.trajectoryManager.predictionSteps = steps;
+        }
+        document.getElementById('pred-steps').textContent = steps;
         if (this.game.isPaused) {
           this.game.updateTrajectoryPrediction();
         }
@@ -710,8 +714,12 @@ export class UIManager {
     const predStepSizeSlider = document.getElementById('pred-stepsize-slider');
     if (predStepSizeSlider) {
       predStepSizeSlider.addEventListener('input', (e) => {
-        this.game.predictionStepSize = parseFloat(e.target.value);
-        document.getElementById('pred-stepsize').textContent = this.game.predictionStepSize.toFixed(2);
+        const stepSize = parseFloat(e.target.value);
+        this.game.predictionStepSize = stepSize;
+        if (this.game.trajectoryManager) {
+          this.game.trajectoryManager.predictionStepSize = stepSize;
+        }
+        document.getElementById('pred-stepsize').textContent = stepSize.toFixed(2);
         if (this.game.isPaused) {
           this.game.updateTrajectoryPrediction();
         }
