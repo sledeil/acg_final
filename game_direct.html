@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Educational Space Navigation v2 - Gravitational Slingshot</title>
+  <link rel="stylesheet" href="save_load_ui.css">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    canvas {
+      display: block;
+    }
+    #hud {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #00ff00;
+      font-size: 14px;
+      text-shadow: 0 0 10px #00ff00;
+      pointer-events: none;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #00ff00;
+    }
+    #instructions {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-align: left;
+      background: rgba(0, 0, 0, 0.95);
+      padding: 40px;
+      border-radius: 15px;
+      border: 2px solid #00ff00;
+      box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+      max-width: 700px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    #instructions h2 {
+      color: #00ff00;
+      margin-top: 0;
+      text-shadow: 0 0 20px #00ff00;
+      font-size: 28px;
+      text-align: center;
+    }
+    #instructions h3 {
+      color: #ffaa00;
+      margin-top: 20px;
+      font-size: 20px;
+    }
+    #instructions p {
+      line-height: 1.6;
+      margin: 10px 0;
+      font-size: 14px;
+    }
+    #instructions ul {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+    #instructions li {
+      margin: 8px 0;
+      line-height: 1.5;
+    }
+    #instructions strong {
+      color: #00ffff;
+    }
+    #instructions .highlight {
+      color: #ffff00;
+      font-weight: bold;
+    }
+    #start-button {
+      display: block;
+      margin: 20px auto 0;
+      padding: 15px 40px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #000;
+      background: #00ff00;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+      transition: all 0.3s;
+    }
+    #start-button:hover {
+      background: #00ffff;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
+      transform: scale(1.05);
+    }
+    #fuel-warning {
+      color: #ff0000;
+      font-weight: bold;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.3; }
+    }
+    #physics-controls {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: #00ff00;
+      font-size: 14px;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 15px;
+      border: 1px solid #00ff00;
+      border-radius: 8px;
+      min-width: 200px;
+    }
+    #physics-controls strong {
+      color: #00ffff;
+    }
+    #physics-controls input[type="range"] {
+      width: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div id="physics-controls">
+    <div><strong>Physics Testing</strong></div>
+    <div style="margin-top: 10px;">
+      TimeScale: <span id="timescale-display">0.10</span>x
+      <br><input type="range" id="timescale-slider" min="0.01" max="20" value="0.1" step="0.01">
+    </div>
+    <div style="margin-top: 10px;">
+      SubSteps: <span id="substeps-display">200</span>
+      <br><input type="range" id="substeps-slider" min="10" max="1000" value="200" step="10">
+    </div>
+    <div style="margin-top: 10px; font-size: 12px; color: #888; border-top: 1px solid #444; padding-top: 8px;">
+      <div>G = 1.0</div>
+      <div>Sun:Earth = 333000:1</div>
+      <div>Ship mass = 1e-20</div>
+    </div>
+    <div style="margin-top: 10px; font-size: 12px; border-top: 1px solid #444; padding-top: 8px;">
+      <strong style="color: #ffff00;">Camera:</strong>
+      <div>Left Drag: Rotate</div>
+      <div>Middle Drag: Pan</div>
+      <div>Mouse Wheel: Zoom</div>
+      <div><strong>C</strong>: Focus ship</div>
+      <div><strong>H</strong>: View Sun</div>
+      <div><strong>Z</strong>: Zoom out</div>
+      <div style="margin-top: 8px; border-top: 1px solid #333; padding-top: 5px;">
+        <strong>View Planets:</strong>
+        <div>1: Sun, 2: Mercury, 3: Venus</div>
+        <div>4: Earth, 5: Moon, 6: Mars</div>
+        <div>7: Phobos, 8: Jupiter, 9: Ship</div>
+        <div>0: Halley's Commet</div>
+      </div>
+      <div style="margin-top: 8px; border-top: 1px solid #333; padding-top: 5px;">
+        <strong>X</strong>: Clear orbit trails
+      </div>
+      <div style="margin-top: 8px; border-top: 1px solid #333; padding-top: 5px;">
+        <strong style="color: #ffff00;">F</strong>: Toggle reference frame
+        <div style="font-size: 11px; margin-left: 10px; color: #aaa;">
+          Sun → Earth → Moon → Sun...
+        </div>
+      </div>
+      <div style="margin-top: 8px; border-top: 1px solid #333; padding-top: 5px;">
+        <strong style="color: #ff00ff;">Trajectory Prediction:</strong>
+        <div><strong>P</strong>: Pause time</div>
+        <div>Arrow keys: Adjust velocity</div>
+        <div>PgUp/PgDn: Adjust Y velocity</div>
+        <div>Backspace: Reset ΔV</div>
+        <div><strong>Enter</strong>: Apply & resume</div>
+        <div style="margin-top: 8px; border-top: 1px solid #222; padding-top: 5px;">
+          ΔV Magnitude: <span id="deltav-magnitude">0.05</span>x
+          <br><input type="range" id="deltav-slider" min="0.01" max="2.0" value="0.05" step="0.01" style="width: 150px;">
+        </div>
+        <div style="margin-top: 8px; border-top: 1px solid #222; padding-top: 5px; font-size: 11px; color: #aaa;">
+          <div><strong style="color: #ff00ff;">Prediction Details:</strong></div>
+          <div>Steps: <span id="pred-steps">10000</span></div>
+          <div>Step Size: <span id="pred-stepsize">0.05</span>s</div>
+          <div>Sim Time: <span id="pred-simtime">0</span>s</div>
+          <div style="margin-top: 4px;">
+            Steps: <input type="range" id="pred-steps-slider" min="1000" max="100000" value="10000" step="1000" style="width: 120px;">
+          </div>
+          <div style="margin-top: 4px;">
+            Step Size: <input type="range" id="pred-stepsize-slider" min="0.01" max="2.0" value="0.05" step="0.01" style="width: 120px;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+      }
+    }
+  </script>
+  <script type="module" src="ui/save_load_ui.js"></script>
+  <script type="module" src="ui/ui_manager.js"></script>
+  <script type="module" src="game.js"></script>
+  <script type="module" src="ui/rocket_selector.js"></script>
+</body>
+</html>

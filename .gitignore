@@ -1,0 +1,51 @@
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+bower_components/
+
+# Build outputs
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Claude Code
+.claude/
+CLAUDE.md
+
+# Backup files
+*.backup
+*.bak
+*.before_*
+
+# Test files (if any)
+test/
+tests/
+*.test.js
+
+# Package manager files (if not needed)
+package-lock.json
+yarn.lock

@@ -1,0 +1,355 @@
+/* Save/Load UI Styling - Minimalist Black & White */
+
+/* Menu Overlay */
+.save-load-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.save-load-menu.active {
+  opacity: 1;
+}
+
+/* Backdrop */
+.menu-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+}
+
+/* Menu Container */
+.menu-container {
+  position: relative;
+  background: #000;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  max-width: 900px;
+  width: 90%;
+  max-height: 85vh;
+  overflow: hidden;
+  animation: fadeIn 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Header */
+.menu-header {
+  background: #000;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #fff;
+}
+
+.menu-header h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  opacity: 0.6;
+}
+
+/* Content */
+.menu-content {
+  flex: 1;
+  padding: 12px;
+  max-height: calc(85vh - 120px);
+  overflow-y: auto;
+}
+
+/* Slot Container */
+.slot-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+/* Save Slot */
+.save-slot {
+  background: #000;
+  border: 1px solid #fff;
+  border-radius: 2px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+.save-slot:hover {
+  background: #1a1a1a;
+}
+
+.save-slot.selected {
+  border-color: #fff;
+  background: #1a1a1a;
+  border-width: 2px;
+}
+
+.save-slot.empty {
+  border-style: dashed;
+  opacity: 0.5;
+}
+
+.save-slot.empty:hover {
+  opacity: 1;
+}
+
+/* Slot Header */
+.slot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.slot-number {
+  color: #fff;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.slot-date {
+  color: #aaa;
+  font-size: 11px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Slot Name */
+.slot-name {
+  color: #fff;
+  font-size: 13px;
+  font-weight: normal;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Slot Info */
+.slot-info {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 6px;
+  font-size: 11px;
+  color: #aaa;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.slot-time, .slot-location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Slot Stats */
+.slot-stats {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: #fff;
+  font-weight: normal;
+  margin-top: auto;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Empty Slot */
+.empty-text {
+  color: #666;
+  font-size: 13px;
+  text-align: center;
+  margin: 15px 0 5px 0;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.empty-hint {
+  color: #666;
+  font-size: 11px;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Footer */
+.menu-footer {
+  background: #000;
+  padding: 12px;
+  border-top: 1px solid #fff;
+}
+
+.button-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.menu-btn {
+  flex: 1;
+  min-width: 80px;
+  padding: 8px 12px;
+  border: 1px solid #fff;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: normal;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #000;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.menu-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+.menu-btn:active {
+  opacity: 0.8;
+}
+
+/* Help Text */
+.help-text {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-size: 10px;
+  color: #666;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.help-text span {
+  display: inline-block;
+}
+
+/* Notifications */
+.notification-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10001;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.notification {
+  background: #000;
+  border: 1px solid #fff;
+  border-radius: 2px;
+  padding: 12px 16px;
+  min-width: 250px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: normal;
+  opacity: 0;
+  transform: translateX(400px);
+  transition: all 0.2s ease;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.notification.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.notification-success {
+  border-color: #fff;
+}
+
+.notification-error {
+  border-color: #fff;
+}
+
+.notification-info {
+  border-color: #fff;
+}
+
+/* Scrollbar Styling */
+.menu-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.menu-content::-webkit-scrollbar-track {
+  background: #000;
+}
+
+.menu-content::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 0;
+}
+
+.menu-content::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .slot-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .menu-btn {
+    min-width: auto;
+  }
+  
+  .help-text {
+    flex-direction: column;
+    gap: 4px;
+  }
+}

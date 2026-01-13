@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Space Navigation Game</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #0f0;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .container {
+      text-align: center;
+      background: rgba(0, 20, 0, 0.9);
+      padding: 50px;
+      border: 2px solid #0f0;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+    }
+    h1 {
+      font-size: 36px;
+      margin-bottom: 40px;
+      text-shadow: 0 0 10px #0f0;
+    }
+    .button {
+      display: block;
+      margin: 20px auto;
+      padding: 15px 40px;
+      font-size: 18px;
+      font-family: 'Courier New', monospace;
+      color: #000;
+      background: #0f0;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+      min-width: 200px;
+    }
+    .button:hover {
+      background: #0ff;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+      transform: scale(1.05);
+    }
+    .info {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 SPACE NAVIGATION GAME</h1>
+    <a href="game_direct.html" class="button">START NEW GAME</a>
+    <button onclick="showLoadInfo()" class="button">LOAD GAME</button>
+    <a href="game_direct.html" class="button">TUTORIAL</a>
+    <div class="info">
+      <p>Use WASD to thrust | Shift to boost | P to pause</p>
+      <p>F5: Quick Save | F9: Quick Load</p>
+    </div>
+  </div>
+
+  <script>
+    function showLoadInfo() {
+      alert('To load a saved game:\n\n1. Click "START NEW GAME"\n2. Press ESC to open pause menu\n3. Click "Load Game" button\n\nOr press F9 to quick load from slot 0');
+    }
+
+    // Check for saved games
+    window.addEventListener('load', () => {
+      let hasSaves = false;
+      for (let i = 0; i < 10; i++) {
+        if (localStorage.getItem(`space_game_save_slot_${i}`)) {
+          hasSaves = true;
+          break;
+        }
+      }
+
+      if (hasSaves) {
+        console.log('✅ Found saved games in localStorage');
+      } else {
+        console.log('ℹ️ No saved games found');
+      }
+    });
+  </script>
+</body>
+</html>
