@@ -485,8 +485,8 @@ class SpaceGame {
       timeScale: 0.1, // Start slow for stability (can increase with sliders)
       subSteps: 200, // Many sub-steps for numerical stability
 
-      // HPOP (High Precision Orbit Propagator) - DISABLED (for testing, set to true)
-      useHPOP: false,
+      // HPOP (High Precision Orbit Propagator) - ENABLED for high precision simulation
+      useHPOP: true,
       spacecraftArea: 10.0,        // Cross-sectional area (m²)
       spacecraftMass: 1000,        // Mass (kg) - will be updated
       dragCoefficient: 2.2,        // Drag coefficient

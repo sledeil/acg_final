@@ -482,6 +482,7 @@ export class PhysicsEngine {
  */
 export class GravityHarmonics {
   // Earth gravitational field coefficients (dimensionless)
+  // These values are from real Earth measurements and don't need unit conversion
   static J2 = 1.08263e-3;   // Oblateness (dominant term)
   static J3 = -2.53266e-6;  // Pear-shaped asymmetry
   static J4 = -1.61962e-6;  // Higher order oblateness
@@ -624,8 +625,19 @@ export class ThirdBodyPerturbation {
 
 /**
  * Atmospheric Drag - Harris-Priester atmospheric density model
+ *
+ * Unit Conversion Constants:
+ * Game units: G=1, M_earth=1, R_earth=2
+ * Derived scales:
+ *   - Length: 1 game unit = 3.186e6 m (R_earth_real / R_earth_game)
+ *   - Velocity: 1 game unit = 11183 m/s (L_scale / T_scale)
+ *   - Acceleration: 1 game unit = 39.28 m/s² (derived from g_earth)
  */
 export class AtmosphericDrag {
+  // Unit conversion constants
+  static VELOCITY_SCALE = 11183;      // m/s per game velocity unit
+  static ACCEL_SCALE = 39.28;         // m/s² per game acceleration unit
+
   // Harris-Priester density model (simplified)
   // Altitude bins (km) and corresponding densities (kg/m³)
   static densityTable = [
@@ -680,13 +692,13 @@ export class AtmosphericDrag {
 
   /**
    * Calculate drag acceleration
-   * @param {THREE.Vector3} position - Spacecraft position
-   * @param {THREE.Vector3} velocity - Spacecraft velocity
+   * @param {THREE.Vector3} position - Spacecraft position (game units)
+   * @param {THREE.Vector3} velocity - Spacecraft velocity (game units)
    * @param {Object} earth - Earth body reference
    * @param {number} area - Spacecraft cross-sectional area (m²)
    * @param {number} mass - Spacecraft mass (kg)
    * @param {number} Cd - Drag coefficient (dimensionless, typically 2.0-2.5)
-   * @returns {THREE.Vector3} Drag acceleration
+   * @returns {THREE.Vector3} Drag acceleration (game units)
    */
   static calculateDrag(position, velocity, earth, area, mass, Cd) {
     if (!earth) {
@@ -697,55 +709,62 @@ export class AtmosphericDrag {
     const r_earth = position.clone().sub(earth.position);
     const altitude = r_earth.length() - earth.radius;
 
-    // Get atmospheric density
+    // Get atmospheric density (kg/m³)
     const rho = this.getDensity(altitude, earth.radius);
 
-    // Velocity relative to rotating atmosphere
-    // (Simplified: assume atmosphere co-rotates with Earth)
-    // For more accuracy, would need Earth's rotation rate
-    const v_rel = velocity.clone();
-    const v_speed = v_rel.length();
+    // Convert velocity from game units to SI units (m/s)
+    const v_rel_game = velocity.clone();
+    const v_speed_game = v_rel_game.length();
 
-    if (v_speed < 1e-6) {
+    if (v_speed_game < 1e-6) {
       return new THREE.Vector3(0, 0, 0);
     }
 
-    // Drag force: F = -0.5 * rho * v² * Cd * A * v_hat
-    // Acceleration: a = F / m
-    const dragMagnitude = 0.5 * rho * v_speed * v_speed * Cd * area / mass;
-    const dragAccel = v_rel.normalize().multiplyScalar(-dragMagnitude);
+    const v_speed_SI = v_speed_game * this.VELOCITY_SCALE; // Convert to m/s
 
-    // Scale to game units (very small in reality, scale up for visibility)
-    // This is a game parameter that can be tuned
-    const gameScale = 1e10; // Adjust this to make drag noticeable in game
-    return dragAccel.multiplyScalar(gameScale);
+    // Drag force in SI units: F = -0.5 * rho * v² * Cd * A * v_hat
+    // Acceleration in SI units: a = F / m (m/s²)
+    const dragMagnitude_SI = 0.5 * rho * v_speed_SI * v_speed_SI * Cd * area / mass;
+
+    // Convert acceleration from SI (m/s²) to game units
+    const dragMagnitude_game = dragMagnitude_SI / this.ACCEL_SCALE;
+
+    // Apply in opposite direction of velocity
+    const dragAccel = v_rel_game.normalize().multiplyScalar(-dragMagnitude_game);
+
+    return dragAccel;
   }
 }
 
 /**
  * Solar Radiation Pressure - Photon pressure from sunlight
+ *
+ * Unit Conversion Constants:
+ * Same as AtmosphericDrag - uses proper dimensional analysis
  */
 export class SolarRadiationPressure {
-  static SOLAR_FLUX = 1367; // W/m² at 1 AU
-  static SPEED_OF_LIGHT = 299792458; // m/s
-  static AU_TO_GAME_UNITS = 15000; // 1 AU = 15000 game units
+  // Physical constants (SI units)
+  static SOLAR_FLUX = 1367;           // W/m² at 1 AU
+  static SPEED_OF_LIGHT = 299792458;  // m/s
+  static AU_TO_GAME_UNITS = 15000;    // 1 AU = 15000 game units
+  static ACCEL_SCALE = 39.28;         // m/s² per game acceleration unit
 
   /**
    * Calculate solar radiation pressure acceleration
-   * @param {THREE.Vector3} position - Spacecraft position
+   * @param {THREE.Vector3} position - Spacecraft position (game units)
    * @param {Object} sun - Sun body reference
    * @param {Object} earth - Earth body reference (for shadow calculation)
    * @param {number} area - Spacecraft cross-sectional area (m²)
    * @param {number} mass - Spacecraft mass (kg)
    * @param {number} reflectivity - Surface reflectivity (0=absorb, 1=reflect)
-   * @returns {THREE.Vector3} SRP acceleration
+   * @returns {THREE.Vector3} SRP acceleration (game units)
    */
   static calculateSRP(position, sun, earth, area, mass, reflectivity) {
     if (!sun) {
       return new THREE.Vector3(0, 0, 0);
     }
 
-    // Vector from Sun to spacecraft
+    // Vector from Sun to spacecraft (game units)
     const r_sun_sc = position.clone().sub(sun.position);
     const distance = r_sun_sc.length();
 
@@ -753,15 +772,18 @@ export class SolarRadiationPressure {
     const distanceAU = distance / this.AU_TO_GAME_UNITS;
     const flux = this.SOLAR_FLUX / (distanceAU * distanceAU);
 
-    // Radiation pressure: P = Flux / c * (1 + reflectivity)
-    // Force: F = P * Area
-    // Acceleration: a = F / mass
+    // Radiation pressure in SI units: P = Flux / c * (1 + reflectivity)
+    // Force in SI units: F = P * Area
+    // Acceleration in SI units: a = F / mass (m/s²)
     const pressure = flux / this.SPEED_OF_LIGHT * (1 + reflectivity);
     const force = pressure * area;
-    const accelMagnitude = force / mass;
+    const accelMagnitude_SI = force / mass;
+
+    // Convert acceleration from SI (m/s²) to game units
+    const accelMagnitude_game = accelMagnitude_SI / this.ACCEL_SCALE;
 
     // Direction: away from Sun
-    const accel = r_sun_sc.normalize().multiplyScalar(accelMagnitude);
+    const accel = r_sun_sc.normalize().multiplyScalar(accelMagnitude_game);
 
     // Check for Earth shadow (umbra and penumbra)
     if (earth) {
@@ -769,9 +791,7 @@ export class SolarRadiationPressure {
       accel.multiplyScalar(shadowFactor);
     }
 
-    // Scale to game units
-    const gameScale = 1e6; // Adjust to make SRP noticeable
-    return accel.multiplyScalar(gameScale);
+    return accel;
   }
 
   /**
