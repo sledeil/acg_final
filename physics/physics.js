@@ -21,9 +21,9 @@ export class PhysicsEngine {
     // HPOP (High Precision Orbit Propagator) Configuration
     this.useHPOP = config.useHPOP || false; // Enable/disable high-precision perturbations
     this.hpopConfig = {
-      // Spacecraft physical properties
+      // Spacecraft physical properties (all in SI units)
       area: config.spacecraftArea || 10.0, // Cross-sectional area (m²)
-      mass: config.spacecraftMass || 1000, // Mass (kg) - will be updated when spacecraft is set
+      spacecraftMass: config.spacecraftMass || 1000, // Mass (kg) - SI units
       Cd: config.dragCoefficient || 2.2, // Drag coefficient (dimensionless)
       reflectivity: config.reflectivity || 0.3, // Surface reflectivity (0=black, 1=mirror)
 
@@ -221,7 +221,7 @@ export class PhysicsEngine {
         this.spacecraft.velocity,
         cfg.earth,
         cfg.area,
-        this.spacecraft.mass,
+        cfg.spacecraftMass,  // Use SI mass (kg), not game units
         cfg.Cd
       );
       totalPerturbation.add(dragAccel);
@@ -234,7 +234,7 @@ export class PhysicsEngine {
         cfg.sun,
         cfg.earth,
         cfg.area,
-        this.spacecraft.mass,
+        cfg.spacecraftMass,  // Use SI mass (kg), not game units
         cfg.reflectivity
       );
       totalPerturbation.add(srpAccel);

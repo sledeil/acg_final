@@ -485,18 +485,18 @@ class SpaceGame {
       timeScale: 0.1, // Start slow for stability (can increase with sliders)
       subSteps: 200, // Many sub-steps for numerical stability
 
-      // HPOP (High Precision Orbit Propagator) - ENABLED for high precision simulation
+      // HPOP (High Precision Orbit Propagator) - TESTING INCREMENTALLY
       useHPOP: true,
       spacecraftArea: 10.0,        // Cross-sectional area (m²)
       spacecraftMass: 1000,        // Mass (kg) - will be updated
       dragCoefficient: 2.2,        // Drag coefficient
       reflectivity: 0.3,           // Surface reflectivity (0-1)
 
-      // Enable specific perturbations
-      enableHarmonics: true,       // J2-J6 gravity harmonics
-      enableThirdBody: true,       // Sun/Moon perturbations
-      enableDrag: true,            // Atmospheric drag
-      enableSRP: true              // Solar radiation pressure
+      // Enable specific perturbations (TESTING: J2 + Third-Body + Drag)
+      enableHarmonics: true,       // J2-J6 gravity harmonics - OK
+      enableThirdBody: true,       // Sun/Moon perturbations - OK
+      enableDrag: true,            // Atmospheric drag - TESTING
+      enableSRP: false             // Solar radiation pressure - DISABLED
     });
 
     console.log('🚀 Physics Engine initialized with HPOP enabled');
