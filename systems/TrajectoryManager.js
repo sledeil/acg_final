@@ -15,7 +15,7 @@ export class TrajectoryManager {
 
     // Prediction parameters
     this.predictionSteps = 1000;
-    this.predictionStepSize = 0.1;
+    this.predictionStepSize = 0.05;
     this.showPrediction = false;
   }
 
