@@ -146,7 +146,7 @@ export class TrajectoryManager {
    * Update trajectory prediction
    */
   updateTrajectoryPrediction() {
-    if (!this.showPrediction || !this.game.physics.spacecraft) {
+    if (!this.game.showPrediction || !this.game.physics.spacecraft) {
       this.trajectoryLine.visible = false;
       return;
     }

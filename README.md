@@ -1,8 +1,8 @@
-# 🚀 Space Navigation Game
+#  Space Navigation Game
 
 An educational Three.js-based space navigation game featuring **realistic Newtonian physics**, gravitational mechanics, and orbital slingshot maneuvers. Master the art of orbital mechanics to navigate through the solar system!
 
-## ✨ Features
+##  Features
 
 - **Realistic N-body Physics**: Full gravitational simulation of all celestial bodies
 - **Multiple Reference Frames**: Switch between Sun, Earth, and Moon coordinate systems
@@ -12,7 +12,7 @@ An educational Three.js-based space navigation game featuring **realistic Newton
 - **Interactive Tutorial**: Step-by-step guide to master orbital mechanics
 - **Multiple Spacecraft**: Choose from different rocket designs with unique characteristics
 
-## 🎮 Controls
+##  Controls
 
 ### Flight Controls
 - **WASD**: Thrust in camera-relative directions
@@ -46,7 +46,7 @@ An educational Three.js-based space navigation game featuring **realistic Newton
 - **F1-F4**: Quick save to slots 1-4
 - **Ctrl+F1-F4**: Quick load from slots 1-4
 
-## 🌍 Celestial Bodies
+##  Celestial Bodies
 
 The game features a scientifically accurate (scaled) solar system:
 - **Sun**: The center of the solar system
@@ -59,7 +59,7 @@ The game features a scientifically accurate (scaled) solar system:
 - **Jupiter**: Gas giant with massive gravity
 - **Halley's Comet**: Periodic comet with eccentric orbit
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 You need a local web server to run the game (ES6 modules requirement):
@@ -82,7 +82,7 @@ php -S localhost:8080
 3. Click "Start Mission" to begin
 4. Follow the interactive tutorial to learn the controls
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 space-navigation-game/
@@ -127,33 +127,7 @@ space-navigation-game/
 
 ```
 
-## 🎓 Educational Value
-
-This game teaches:
-- **Orbital Mechanics**: Understanding how objects move in space
-- **Gravity Assists**: Using planetary gravity to change trajectory
-- **Delta-V Budgeting**: Managing limited fuel resources
-- **Reference Frames**: Understanding motion in different coordinate systems
-- **Hohmann Transfers**: Efficient orbital maneuvers
-- **N-body Physics**: Complex gravitational interactions
-
-## 🛠️ Technology Stack
-
-- **Three.js**: 3D graphics rendering
-- **Vanilla JavaScript**: ES6 modules
-- **Web Audio API**: Sound effects and music
-- **LocalStorage**: Save game persistence
-- **CSS3**: User interface styling
-
-## 📊 Code Quality
-
-- **Modular Architecture**: Clean separation of concerns
-- **62.5% Code Reduction**: Refactored from 3655 to 1370 lines
-- **Manager Pattern**: Specialized systems for different game aspects
-- **Factory Pattern**: Efficient entity creation
-- **Component-based Saving**: Flexible save/load system
-
-## 🎮 Gameplay Tips
+##  Gameplay Tips
 
 1. **Start in Orbit**: You begin in a stable orbit around Earth
 2. **Plan Ahead**: Use the trajectory prediction (P key) before major burns
@@ -162,31 +136,6 @@ This game teaches:
 5. **Fuel Management**: Boost mode is powerful but burns fuel quickly
 6. **Gravity Assists**: Use planetary flybys to gain speed without fuel
 
-## 🐛 Known Issues
-
-- High time scales (>10x) may cause physics instability
-- Very close approaches to massive bodies may cause unexpected behavior
-- Save files are stored in browser localStorage (cleared if you clear browser data)
-
-## 📝 License
-
-This project is for educational purposes. Feel free to use and modify for learning.
-
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! This is an educational project aimed at teaching orbital mechanics through interactive gameplay.
-
-## 🌟 Acknowledgments
-
-- NASA for planetary data and inspiration
-- Three.js community for excellent 3D library
-- KSP (Kerbal Space Program) for gameplay inspiration
-- Physics textbooks for accurate orbital mechanics formulas
-
-## 📞 Contact
-
-For questions, suggestions, or feedback, please open an issue on GitHub.
-
----
-
-**Happy Space Traveling! 🚀🌌**
