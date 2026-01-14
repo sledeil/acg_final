@@ -165,6 +165,35 @@ export const GameConfig = {
    */
   checkpointFuelBonus: 50,
 
+  // ========== Mission Configuration ==========
+
+  /**
+   * Mission 1: Moon (Hohmann Transfer Tutorial)
+   */
+  mission1: {
+    name: 'The Earth–Moon Gateway',
+    fuelCapacity: 100,  // kg - basic mission
+    optimalFuel: 48,    // kg - Hohmann transfer
+  },
+
+  /**
+   * Mission 2: Mars (Gravity Assist)
+   */
+  mission2: {
+    name: 'The Martian Slingshot',
+    fuelCapacity: 300,  // kg - requires gravity assist via Moon
+    optimalFuel: 180,   // kg - with efficient slingshot
+  },
+
+  /**
+   * Mission 3: Halley (Comet Rendezvous)
+   */
+  mission3: {
+    name: 'The Comet Chaser',
+    fuelCapacity: 500,  // kg - extreme challenge
+    optimalFuel: 350,   // kg - multi-body assists
+  },
+
   // ========== Orbit Requirements ==========
 
   /**
@@ -189,6 +218,18 @@ export const GameConfig = {
     maxAltitude: 4.0,
     /** Required time in orbit (seconds) */
     requiredTime: 60,
+  },
+
+  /**
+   * Halley orbit requirements
+   */
+  halleyOrbit: {
+    /** Minimum approach distance (game units) */
+    minApproach: 0.3,
+    /** Maximum approach distance (game units) */
+    maxApproach: 1.5,
+    /** Required time near comet (seconds) */
+    requiredTime: 30,
   },
 
   // ========== Audio Configuration ==========

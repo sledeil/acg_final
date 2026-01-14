@@ -229,6 +229,17 @@ export class CheckpointManager {
           this.game.tutorialMode = false;
           this.game.secondMission = true; // Activate Mars mission
           if (orbitStatus) orbitStatus.style.display = 'none';
+
+          // Update mission description to Mars mission
+          const marsDescription = 'II. The Martian Slingshot\n\nMars is not your destination but your engine. Skim the red planet with perfect precision to steal its momentum and launch yourself into deep space without firing a single engine.';
+          if (this.game.uiManager && this.game.uiManager.updateMissionText) {
+            this.game.uiManager.updateMissionText(marsDescription);
+          } else {
+            const missionTextElement = document.getElementById('mission-text');
+            if (missionTextElement) {
+              missionTextElement.textContent = marsDescription;
+            }
+          }
         }
 
         // 视觉反馈：checkpoint 亮度随进度增加
@@ -300,7 +311,19 @@ export class CheckpointManager {
             `Mission Complete!`
           );
           this.game.secondMission = false;
+          this.game.thirdMission = true; // Activate Halley mission
           if (marsOrbitStatus) marsOrbitStatus.style.display = 'none';
+
+          // Update mission description to Halley mission
+          const halleyDescription = 'III. The Comet Chaser\n\nHalley follows no planet\'s path. To catch the Solar System\'s ghost, you must weave through multiple gravity wells in a flawless orbital dance. This is the ultimate test of orbital mechanics.';
+          if (this.game.uiManager && this.game.uiManager.updateMissionText) {
+            this.game.uiManager.updateMissionText(halleyDescription);
+          } else {
+            const missionTextElement = document.getElementById('mission-text');
+            if (missionTextElement) {
+              missionTextElement.textContent = halleyDescription;
+            }
+          }
         }
 
         // Visual feedback: checkpoint brightness increases with progress
