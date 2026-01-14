@@ -388,17 +388,17 @@ Press [ENTER] when ready to begin free flight.`,
         }
 
         #tutorial-content::-webkit-scrollbar-track {
-          background: rgba(0, 255, 0, 0.1);
+          background: rgba(0, 170, 255, 0.1);
           border-radius: 4px;
         }
 
         #tutorial-content::-webkit-scrollbar-thumb {
-          background: rgba(0, 255, 0, 0.5);
+          background: rgba(255, 255, 255, 0.5);
           border-radius: 4px;
         }
 
         #tutorial-content::-webkit-scrollbar-thumb:hover {
-          background: rgba(0, 255, 0, 0.8);
+          background: rgba(255, 255, 255, 0.8);
         }
       `;
       document.head.appendChild(style);
@@ -428,15 +428,15 @@ Press [ENTER] when ready to begin free flight.`,
       max-width: 500px;
       width: 500px;
       background: rgba(0, 0, 0, 0.95);
-      border: 2px solid #00ff00;
+      border: 2px solid #ffffff;
       border-radius: 8px;
       padding: 0;
-      color: #00ff00;
+      color: #ffffff;
       font-family: 'JetBrains Mono', 'Source Code Pro', 'Courier New', monospace;
       font-size: 14px;
       line-height: 1.8;
-      text-shadow: 0 0 10px #00ff00;
-      box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
       pointer-events: auto;
       cursor: move;
       z-index: 10000;
@@ -446,8 +446,8 @@ Press [ENTER] when ready to begin free flight.`,
     this.dragHandle = document.createElement('div');
     this.dragHandle.id = 'tutorial-drag-handle';
     this.dragHandle.style.cssText = `
-      background: linear-gradient(180deg, rgba(0, 255, 0, 0.2), rgba(0, 255, 0, 0.05));
-      border-bottom: 1px solid #00ff00;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+      border-bottom: 1px solid #ffffff;
       padding: 10px 15px;
       border-radius: 6px 6px 0 0;
       cursor: move;
@@ -459,7 +459,7 @@ Press [ENTER] when ready to begin free flight.`,
 
     // Create title text
     const titleText = document.createElement('span');
-    titleText.style.cssText = 'color: #00ff00; font-weight: bold; font-size: 13px;';
+    titleText.style.cssText = 'color: #ffffff; font-weight: bold; font-size: 13px;';
     titleText.textContent = '📖 TUTORIAL';
 
     // Create control buttons container
@@ -471,9 +471,9 @@ Press [ENTER] when ready to begin free flight.`,
     this.toggleButton.id = 'tutorial-toggle-btn';
     this.toggleButton.innerHTML = '▼'; // Minimize icon
     this.toggleButton.style.cssText = `
-      background: rgba(0, 255, 0, 0.2);
-      border: 1px solid #00ff00;
-      color: #00ff00;
+      background: rgba(0, 170, 255, 0.2);
+      border: 1px solid #00aaff;
+      color: #00aaff;
       font-size: 12px;
       width: 24px;
       height: 24px;
@@ -485,11 +485,11 @@ Press [ENTER] when ready to begin free flight.`,
       transition: all 0.2s;
     `;
     this.toggleButton.addEventListener('mouseenter', () => {
-      this.toggleButton.style.background = 'rgba(0, 255, 0, 0.4)';
-      this.toggleButton.style.boxShadow = '0 0 10px rgba(0, 255, 0, 0.5)';
+      this.toggleButton.style.background = 'rgba(0, 170, 255, 0.4)';
+      this.toggleButton.style.boxShadow = '0 0 10px rgba(0, 170, 255, 0.5)';
     });
     this.toggleButton.addEventListener('mouseleave', () => {
-      this.toggleButton.style.background = 'rgba(0, 255, 0, 0.2)';
+      this.toggleButton.style.background = 'rgba(0, 170, 255, 0.2)';
       this.toggleButton.style.boxShadow = 'none';
     });
     this.toggleButton.addEventListener('click', (e) => {
@@ -499,7 +499,7 @@ Press [ENTER] when ready to begin free flight.`,
 
     // Create drag hint
     const dragHint = document.createElement('span');
-    dragHint.style.cssText = 'color: #00ff00; font-size: 11px; opacity: 0.7;';
+    dragHint.style.cssText = 'color: #00aaff; font-size: 11px; opacity: 0.7;';
     dragHint.textContent = 'Drag to move';
 
     // Assemble controls
@@ -873,15 +873,15 @@ Press [ENTER] when ready to begin free flight.`,
 
     // Update content area (not the whole messageBox, to preserve drag handle)
     this.messageContent.innerHTML = `
-      <div style="color: #00ffff; font-size: 16px; font-weight: bold; margin-bottom: 12px; border-bottom: 1px solid #00ff00; padding-bottom: 8px;">
+      <div style="color: #ffffff; font-size: 16px; font-weight: bold; margin-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.3); padding-bottom: 8px;">
         ${step.title}
       </div>
-      <div style="margin-bottom: 0px; white-space: pre-line; font-size: 13px;">
+      <div style="margin-bottom: 0px; white-space: pre-line; font-size: 13px; color: #ffffff;">
         ${formattedMessage}
       </div>
-      <div id="tutorial-feedback" style="color: #00ff00; font-size: 14px; font-weight: bold; text-align: center; margin: 8px 0 0 0; min-height: 0px; text-shadow: 0 0 15px #00ff00;">
+      <div id="tutorial-feedback" style="color: #00ffaa; font-size: 14px; font-weight: bold; text-align: center; margin: 8px 0 0 0; min-height: 0px; text-shadow: 0 0 10px rgba(0, 255, 170, 0.5);">
       </div>
-      <div class="tutorial-hint" style="color: #ffff00; font-size: 13px; font-style: italic; text-align: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid #00ff00; white-space: pre-line;">
+      <div class="tutorial-hint" style="color: #ffaa00; font-size: 13px; font-style: italic; text-align: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.3); white-space: pre-line;">
         ${step.hint}
       </div>
     `;
@@ -920,13 +920,13 @@ Press [ENTER] when ready to begin free flight.`,
 
   /**
    * Format message text with markdown-like syntax
-   * **text** becomes bold red
+   * **text** becomes bold cyan
    * Preserves HTML tags (like <div>, <img>)
    */
   formatMessage(text) {
     // Replace **text** with styled span (but don't touch HTML tags)
     // This regex avoids replacing ** inside HTML tags
-    return text.replace(/\*\*([^*<>]+)\*\*/g, '<span style="color: #ff4444; font-weight: bold;">$1</span>');
+    return text.replace(/\*\*([^*<>]+)\*\*/g, '<span style="color: #00ffff; font-weight: bold;">$1</span>');
   }
 
   /**
